@@ -13,4 +13,5 @@
     <string name="sign_in_button">Sign In</string>
     <string name="forgot_password">I forgot my password</string>
     <string name="new_account">I need to create an account</string>
+    <string name="menu">Menu</string>
 </resources>
