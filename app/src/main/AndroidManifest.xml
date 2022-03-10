@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CatFeeder">
         <activity
+            android:name=".ScheduleFeedingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FeederLogActivity"
+            android:exported="false" />
+        <activity
             android:name=".FeederStatusActivity"
             android:exported="false" />
         <activity
