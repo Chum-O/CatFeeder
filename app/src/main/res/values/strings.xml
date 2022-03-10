@@ -14,4 +14,11 @@
     <string name="forgot_password">I forgot my password</string>
     <string name="new_account">I need to create an account</string>
     <string name="menu">Menu</string>
+    <string name="feeder_status">Feeder Status</string>
+    <string name="feeder_log">Feeder Log</string>
+    <string name="schedule_feeding">Schedule Feedings</string>
+    <string name="activate_feeder">Activate Feeder</string>
+    <string name="view_camera">View Camera</string>
+    <string name="activate_laser">Activate Laser</string>
+    <string name="sign_out">Sign Out</string>
 </resources>
