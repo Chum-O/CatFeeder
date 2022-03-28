@@ -49,6 +49,12 @@ public class MenuActivity extends AppCompatActivity {
                 openScheduleFeedingActivity();
             }
         });
+        button_schedule_feeding.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openFeedingActivity();
+            }
+        });
     }
 
     public void openMainActivity() {
@@ -68,6 +74,10 @@ public class MenuActivity extends AppCompatActivity {
 
     public void openScheduleFeedingActivity() {
         Intent intent = new Intent(this, ScheduleFeedingActivity.class);
+        startActivity(intent);
+    }
+    public void openFeedingActivity() {
+        Intent intent = new Intent(this, ManualFeedingActivity.class);
         startActivity(intent);
     }
 }
