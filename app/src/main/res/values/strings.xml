@@ -21,4 +21,9 @@
     <string name="view_camera">View Camera</string>
     <string name="activate_laser">Activate Laser</string>
     <string name="sign_out">Sign Out</string>
+    <string name="back">Back</string>
+    <string name="alarm_time">Alarm Time</string>
+    <string name="feeding1">Feeding Time 1</string>
+    <string name="feeding2">Feeding Time 2</string>
+    <string name="feeding3">Feeding Time 3</string>
 </resources>
