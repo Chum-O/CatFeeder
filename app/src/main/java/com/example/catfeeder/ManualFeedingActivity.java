@@ -81,11 +81,13 @@ public class ManualFeedingActivity extends AppCompatActivity {
         statusText = findViewById(R.id.statusText);
         PiStream = (WebView) findViewById(R.id.pi_cam_stream);
 
-        String piAddress = "http://192.168.86.145:8000/stream.mjpg";
+        String piCamPythonStream = "http://192.168.86.145:8000/stream.mjpg";
+        String motionStream = "http://192.168.86.145:8081";
+        String mjpgStreamer = "http://192.168.86.145:8080/?action=stream";
         PiStream.getSettings().setLoadWithOverviewMode(true);
         PiStream.getSettings().setUseWideViewPort(true);
 
-        PiStream.loadUrl(piAddress);
+        PiStream.loadUrl(mjpgStreamer);
 
         dispense.setOnClickListener(new View.OnClickListener() {
             @Override
