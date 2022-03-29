@@ -11,9 +11,7 @@ public class MenuActivity extends AppCompatActivity {
     Button button_feeder_status;
     Button button_feeder_log;
     Button button_schedule_feeding;
-    Button button_activate_feeder;
-    Button button_activate_laser;
-    Button button_view_camera;
+    Button button_manual_feeding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +22,7 @@ public class MenuActivity extends AppCompatActivity {
         button_feeder_status = findViewById(R.id.button_feeder_status);
         button_feeder_log = findViewById(R.id.button_feeder_log);
         button_schedule_feeding = findViewById(R.id.button_schedule_feeding);
+        button_manual_feeding = findViewById(R.id.button_activate_feeder);
 
         button_sign_out.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,7 +48,7 @@ public class MenuActivity extends AppCompatActivity {
                 openScheduleFeedingActivity();
             }
         });
-        button_schedule_feeding.setOnClickListener(new View.OnClickListener() {
+        button_manual_feeding.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openFeedingActivity();
