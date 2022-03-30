@@ -9,6 +9,8 @@ import android.content.SharedPreferences.Editor;
 import android.content.Context;
 import android.widget.TextView;
 import android.os.Bundle;
+
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import okhttp3.*;
 
@@ -27,7 +29,7 @@ public class ScheduleFeedingActivity extends AppCompatActivity {
     String feedingTime2;
     String feedingTime3;
     Context context;
-    private String url = ""; // URL HERE
+    private String url = "http://192.168.86.145:5000"; // URL HERE
     private String POST = "POST";
     private String GET = "GET";
 
@@ -55,7 +57,7 @@ public class ScheduleFeedingActivity extends AppCompatActivity {
             feedingTime1 = curHour + ":" + curMin;
             time_feeding1.setText(feedingTime1);
             saveDataToPreferences(context, "feedingTime1", feedingTime1);
-            sendRequest(POST, "setFeeding", "feedingTime1", feedingTime1);
+            sendRequest(POST, "setFeeding", "feedingTime1","1: "+feedingTime1);
         });
 
         button_feeding2.setOnClickListener(v -> {
@@ -64,7 +66,7 @@ public class ScheduleFeedingActivity extends AppCompatActivity {
             feedingTime2 = curHour + ":" + curMin;
             time_feeding2.setText(feedingTime2);
             saveDataToPreferences(context, "feedingTime2", feedingTime2);
-            sendRequest(POST, "setFeeding", "feedingTime2", feedingTime2);
+            sendRequest(POST, "setFeeding", "feedingTime2","2: "+feedingTime2);
         });
 
         button_feeding3.setOnClickListener(v -> {
@@ -73,7 +75,7 @@ public class ScheduleFeedingActivity extends AppCompatActivity {
             feedingTime3 = curHour + ":" + curMin;
             time_feeding3.setText(feedingTime3);
             saveDataToPreferences(context, "feedingTime3", feedingTime3);
-            sendRequest(POST, "setFeeding", "feedingTime3", feedingTime3);
+            sendRequest(POST, "setFeeding", "feedingTime3","3: "+feedingTime3);
         });
 
     }
@@ -116,6 +118,22 @@ public class ScheduleFeedingActivity extends AppCompatActivity {
                     .url(fullURL)
                     .build();
         }
-    }
 
+        Thread thread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try  {
+                    try {
+                        client.newCall(request).execute();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+    }
 }

@@ -12,6 +12,7 @@ public class MenuActivity extends AppCompatActivity {
     Button button_feeder_log;
     Button button_schedule_feeding;
     Button button_manual_feeding;
+    Button button_camera_laser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +24,7 @@ public class MenuActivity extends AppCompatActivity {
         button_feeder_log = findViewById(R.id.button_feeder_log);
         button_schedule_feeding = findViewById(R.id.button_schedule_feeding);
         button_manual_feeding = findViewById(R.id.button_activate_feeder);
+        button_camera_laser = findViewById(R.id.button_laser_camera);
 
         button_sign_out.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,6 +56,12 @@ public class MenuActivity extends AppCompatActivity {
                 openFeedingActivity();
             }
         });
+        button_camera_laser.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                openLaserToyActivity();
+            }
+        });
     }
 
     public void openMainActivity() {
@@ -77,6 +85,10 @@ public class MenuActivity extends AppCompatActivity {
     }
     public void openFeedingActivity() {
         Intent intent = new Intent(this, ManualFeedingActivity.class);
+        startActivity(intent);
+    }
+    public void openLaserToyActivity() {
+        Intent intent = new Intent(this, LaserToyActivity.class);
         startActivity(intent);
     }
 }
