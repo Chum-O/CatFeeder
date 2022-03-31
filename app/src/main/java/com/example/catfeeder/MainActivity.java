@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.widget.Button;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 
 
@@ -16,12 +15,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         button = findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openMenuActivity();
-            }
-        });
+        button.setOnClickListener(v -> openMenuActivity());
     }
 
     public void openMenuActivity(){
