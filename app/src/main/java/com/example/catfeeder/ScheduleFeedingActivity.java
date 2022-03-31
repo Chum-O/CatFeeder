@@ -57,7 +57,7 @@ public class ScheduleFeedingActivity extends AppCompatActivity {
             feedingTime1 = curHour + ":" + curMin;
             time_feeding1.setText(feedingTime1);
             saveDataToPreferences(context, "feedingTime1", feedingTime1);
-            sendRequest(POST, "setFeeding", "feedingTime1","1: "+feedingTime1);
+            sendRequest(POST, "setFeeding", "feedingTime1","1."+feedingTime1);
         });
 
         button_feeding2.setOnClickListener(v -> {
@@ -66,7 +66,7 @@ public class ScheduleFeedingActivity extends AppCompatActivity {
             feedingTime2 = curHour + ":" + curMin;
             time_feeding2.setText(feedingTime2);
             saveDataToPreferences(context, "feedingTime2", feedingTime2);
-            sendRequest(POST, "setFeeding", "feedingTime2","2: "+feedingTime2);
+            sendRequest(POST, "setFeeding", "feedingTime2","2."+feedingTime2);
         });
 
         button_feeding3.setOnClickListener(v -> {
@@ -75,7 +75,7 @@ public class ScheduleFeedingActivity extends AppCompatActivity {
             feedingTime3 = curHour + ":" + curMin;
             time_feeding3.setText(feedingTime3);
             saveDataToPreferences(context, "feedingTime3", feedingTime3);
-            sendRequest(POST, "setFeeding", "feedingTime3","3: "+feedingTime3);
+            sendRequest(POST, "setFeeding", "feedingTime3","3."+feedingTime3);
         });
 
     }
