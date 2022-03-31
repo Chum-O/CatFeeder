@@ -12,16 +12,20 @@ import android.widget.Toast;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class LaserToyActivity extends AppCompatActivity {
     WebView PiStream;
     Button randomJitterButton;
+    Button laserToggleButton;
 
     private float[] lastTouchDownXY = new float[2];
 
@@ -29,12 +33,20 @@ public class LaserToyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.laser_toy_activity);
-
         randomJitterButton = findViewById(R.id.random_jitter_button);
+        laserToggleButton = findViewById(R.id.enable_disable_laser);
+
         randomJitterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 randomJitter();
+            }
+        });
+
+        laserToggleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleLaser();
             }
         });
 
@@ -80,8 +92,56 @@ public class LaserToyActivity extends AppCompatActivity {
 
             // use the coordinates for whatever
             Log.i("TAG", "onLongClick: x = " + x + ", y = " + y);
+
+            sendData(x,y);
+
         }
     };
+
+    void sendData(float x, float y){
+        String url = "http://192.168.86.145:5000";
+        String method = "setServo";
+
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS).build();
+        Request request;
+
+        int data1 = (int)(x / 950 * 100);
+        int data2 = (int)(y / 530 * 100);
+        Log.i("TAG", "onLongClick: data1 = " + data1 + ", data2 = " + data2);
+
+        String param = Integer.toString(data1)+":"+Integer.toString(data2);
+        String fullURL = url + "/" + method + (param == null ? "" : "/" + param);
+
+        RequestBody formBody = new FormBody.Builder()
+                .add("ServoData", param)
+                .build();
+
+        request=new Request.Builder()
+                .url(fullURL)
+                .post(formBody)
+                .build();
+
+        Thread thread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try  {
+                    try {
+                        client.newCall(request).execute();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+
+    }
 
     private void randomJitter(){
         randomJitterButton.setEnabled(false);
@@ -120,5 +180,42 @@ public class LaserToyActivity extends AppCompatActivity {
             }
         });
         return;
+    }
+
+    private void toggleLaser(){
+        String url = "http://192.168.86.145:5000";
+        String method = "toggleLaser";
+
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS).build();
+        Request request;
+
+        Log.i("TAG", "toggling laser");
+
+        String fullURL = url + "/" + method;
+
+
+        request=new Request.Builder()
+                .url(fullURL)
+                .build();
+
+        Thread thread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try  {
+                    try {
+                        client.newCall(request).execute();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
     }
 }
