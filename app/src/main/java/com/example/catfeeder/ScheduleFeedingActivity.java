@@ -115,7 +115,7 @@ public class ScheduleFeedingActivity extends AppCompatActivity {
                     .add(paramname, param)
                     .build();
 
-            request=new Request.Builder()
+            request = new Request.Builder()
                     .url(fullURL)
                     .post(formBody)
                     .build();
