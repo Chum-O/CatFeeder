@@ -1,10 +1,17 @@
 package com.example.catfeeder;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.Toast;
@@ -26,8 +33,7 @@ public class LaserToyActivity extends AppCompatActivity {
     WebView PiStream;
     Button randomJitterButton;
     Button laserToggleButton;
-
-    private float[] lastTouchDownXY = new float[2];
+    static int temp = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +41,6 @@ public class LaserToyActivity extends AppCompatActivity {
         setContentView(R.layout.laser_toy_activity);
         randomJitterButton = findViewById(R.id.random_jitter_button);
         laserToggleButton = findViewById(R.id.enable_disable_laser);
-
         randomJitterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,55 +55,49 @@ public class LaserToyActivity extends AppCompatActivity {
             }
         });
 
-        // add both a touch listener and a click listener
-        View myView = findViewById(R.id.pi_cam_controller);
-        myView.setOnTouchListener(touchListener);
-        myView.setOnClickListener(clickListener);
-
         PiStream = (WebView) findViewById(R.id.pi_cam_stream);
-
         String piCamPythonStream = "http://192.168.86.145:8000/stream.mjpg";
         String motionStream = "http://192.168.86.145:8081";
         String mjpgStreamer = "http://192.168.86.145:8080/?action=stream";
         PiStream.getSettings().setLoadWithOverviewMode(true);
         PiStream.getSettings().setUseWideViewPort(true);
-
         PiStream.loadUrl(mjpgStreamer);
 
+        View laser_control_panel = findViewById(R.id.pi_cam_controller);
+        laser_control_panel.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int X = (int) event.getX();
+                int Y = (int) event.getY();
+                int eventaction = event.getAction();
+
+                switch (eventaction) {
+                    case MotionEvent.ACTION_DOWN:
+                        Log.i("TAG", "onLongClick: x = " + X + ", y = " + Y);
+                        sendData(X,Y,laser_control_panel);
+                        break;
+
+                    case MotionEvent.ACTION_MOVE:
+                        temp = temp + 1;
+                        if (temp > 10) {
+                            sendData(X,Y,laser_control_panel);
+                            Log.i("TAG", "updated: x = " + X + ", y = " + Y + " temp = " + temp);
+                            temp = 0;
+                        }
+                        laser_control_panel.invalidate();
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        Log.i("TAG", "left off: x = " + X + ", y = " + Y);
+                        sendData(X,Y,laser_control_panel);
+                        break;
+                }
+                return true;
+            }
+        });
     }
 
-    // the purpose of the touch listener is just to store the touch X,Y coordinates
-    View.OnTouchListener touchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-
-            // save the X,Y coordinates
-            if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
-                lastTouchDownXY[0] = event.getX();
-                lastTouchDownXY[1] = event.getY();
-            }
-
-            // let the touch event pass on to whoever needs it
-            return false;
-        }
-    };
-
-    View.OnClickListener clickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            // retrieve the stored coordinates
-            float x = lastTouchDownXY[0];
-            float y = lastTouchDownXY[1];
-
-            // use the coordinates for whatever
-            Log.i("TAG", "onLongClick: x = " + x + ", y = " + y);
-
-            sendData(x,y);
-
-        }
-    };
-
-    void sendData(float x, float y){
+    void sendData(float x, float y, View v){
         String url = "http://192.168.86.145:5000";
         String method = "setServo";
 
@@ -108,8 +107,10 @@ public class LaserToyActivity extends AppCompatActivity {
                 .writeTimeout(10, TimeUnit.SECONDS).build();
         Request request;
 
-        int data1 = (int)(x / 950 * 100);
-        int data2 = (int)(y / 530 * 100);
+        int maxy = v.getHeight();
+        int maxx = v.getWidth();
+        int data1 = (int)(x / maxx * 100);
+        int data2 = (int)(y / maxy * 100);
         Log.i("TAG", "onLongClick: data1 = " + data1 + ", data2 = " + data2);
 
         String param = Integer.toString(data1)+":"+Integer.toString(data2);
@@ -125,7 +126,6 @@ public class LaserToyActivity extends AppCompatActivity {
                 .build();
 
         Thread thread = new Thread(new Runnable() {
-
             @Override
             public void run() {
                 try  {
@@ -140,7 +140,6 @@ public class LaserToyActivity extends AppCompatActivity {
             }
         });
         thread.start();
-
     }
 
     private void randomJitter(){
@@ -196,13 +195,11 @@ public class LaserToyActivity extends AppCompatActivity {
 
         String fullURL = url + "/" + method;
 
-
         request=new Request.Builder()
                 .url(fullURL)
                 .build();
 
         Thread thread = new Thread(new Runnable() {
-
             @Override
             public void run() {
                 try  {

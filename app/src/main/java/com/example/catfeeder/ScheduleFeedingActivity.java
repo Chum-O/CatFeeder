@@ -50,10 +50,15 @@ public class ScheduleFeedingActivity extends AppCompatActivity {
 
 
         time_feeding1.setText(getDataFromPreferences(context, "feedingTime1"));
+        time_feeding1.setText(getDataFromPreferences(context, "feedingTime2"));
+        time_feeding1.setText(getDataFromPreferences(context, "feedingTime3"));
 
         button_feeding1.setOnClickListener(v -> {
             curHour = timePicker.getCurrentHour().toString();
             curMin = timePicker.getCurrentMinute().toString();
+            if (Integer.parseInt(curMin) < 10) {
+                curMin = "0"+curMin;
+            }
             feedingTime1 = curHour + ":" + curMin;
             time_feeding1.setText(feedingTime1);
             saveDataToPreferences(context, "feedingTime1", feedingTime1);
@@ -63,6 +68,9 @@ public class ScheduleFeedingActivity extends AppCompatActivity {
         button_feeding2.setOnClickListener(v -> {
             curHour = timePicker.getCurrentHour().toString();
             curMin = timePicker.getCurrentMinute().toString();
+            if (Integer.parseInt(curMin) < 10) {
+                curMin = "0"+curMin;
+            }
             feedingTime2 = curHour + ":" + curMin;
             time_feeding2.setText(feedingTime2);
             saveDataToPreferences(context, "feedingTime2", feedingTime2);
@@ -72,6 +80,9 @@ public class ScheduleFeedingActivity extends AppCompatActivity {
         button_feeding3.setOnClickListener(v -> {
             curHour = timePicker.getCurrentHour().toString();
             curMin = timePicker.getCurrentMinute().toString();
+            if (Integer.parseInt(curMin) < 10) {
+                curMin = "0"+curMin;
+            }
             feedingTime3 = curHour + ":" + curMin;
             time_feeding3.setText(feedingTime3);
             saveDataToPreferences(context, "feedingTime3", feedingTime3);
