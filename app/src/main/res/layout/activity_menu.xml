@@ -16,28 +16,16 @@
         android:textSize="60sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.059" />
-
-    <View
-        android:id="@+id/view2"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.198" />
+        app:layout_constraintVertical_bias="0.007" />
 
     <Button
-        android:id="@+id/button_feeder_status"
+        android:id="@+id/button_schedule_feeding"
         android:layout_width="250dp"
         android:layout_height="60dp"
-        android:text="@string/feeder_status"
+        android:text="@string/schedule_feeding"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -58,10 +46,10 @@
         app:layout_constraintVertical_bias="0.4" />
 
     <Button
-        android:id="@+id/button_schedule_feeding"
+        android:id="@+id/button_laser_camera"
         android:layout_width="250dp"
         android:layout_height="60dp"
-        android:text="@string/schedule_feeding"
+        android:text="Camera &amp; Laser"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -70,10 +58,10 @@
         app:layout_constraintVertical_bias="0.5" />
 
     <Button
-        android:id="@+id/button_activate_feeder"
+        android:id="@+id/button_feeder_status"
         android:layout_width="250dp"
         android:layout_height="60dp"
-        android:text="@string/activate_feeder"
+        android:text="@string/feeder_status"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -82,10 +70,10 @@
         app:layout_constraintVertical_bias="0.6" />
 
     <Button
-        android:id="@+id/button_laser_camera"
+        android:id="@+id/button_activate_feeder"
         android:layout_width="250dp"
         android:layout_height="60dp"
-        android:text="Camera &amp; Laser"
+        android:text="@string/activate_feeder"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -100,9 +88,22 @@
         android:text="@string/sign_out"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.9" />
+
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.168" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

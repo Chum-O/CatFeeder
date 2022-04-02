@@ -1,5 +1,6 @@
 package com.example.catfeeder;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,7 +18,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.slider.Slider;
+
 import org.jetbrains.annotations.NotNull;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 
@@ -27,12 +31,16 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 
 public class ManualFeedingActivity extends AppCompatActivity {
     Button dispense;
-    TextView statusText;
     WebView PiStream;
-
+    com.google.android.material.slider.Slider feedSizeSlider;
+    TextView FeedSizeText;
+    Context context;
+    Button SetFeedSize;
 
     private void dispenseFood(){
         dispense.setEnabled(false);
@@ -73,13 +81,33 @@ public class ManualFeedingActivity extends AppCompatActivity {
         return;
     }
 
+    public static void saveDataToPreferences(Context context, String key, String value) {
+        SharedPreferences sp = context.getSharedPreferences("feed-size", Context.MODE_PRIVATE);
+        Editor editor = sp.edit();
+        editor.putString(key, value);
+        editor.commit();
+    }
+
+    public static String getDataFromPreferences(Context context, String key) {
+        try {
+            SharedPreferences sp = context.getSharedPreferences("feed-size", Context.MODE_PRIVATE);
+            return sp.getString(key, "");
+        } catch(Exception ex){
+            return "0";
+        }
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manual_feeding_activity);
         dispense = findViewById(R.id.button_trigger_manual_feed);
-        statusText = findViewById(R.id.statusText);
+        feedSizeSlider = findViewById(R.id.feed_size_slider);
         PiStream = (WebView) findViewById(R.id.pi_cam_stream);
+        FeedSizeText = findViewById(R.id.feedSizeText);
+        SetFeedSize = findViewById(R.id.set_feed_size);
+        context=this;
 
         String piCamPythonStream = "http://192.168.86.145:8000/stream.mjpg";
         String motionStream = "http://192.168.86.145:8081";
@@ -95,6 +123,33 @@ public class ManualFeedingActivity extends AppCompatActivity {
                 dispenseFood();
             }
         });
+
+        SetFeedSize.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                float t = feedSizeSlider.getValue();
+                String t1=String.valueOf(t);
+                saveDataToPreferences(context,"feed-size",t1);
+                String t1s = String.valueOf(t);
+                String s = "Current size: " + t1s.substring(0,3);
+                FeedSizeText.setText(s);
+            }
+        });
+
+        String t1=getDataFromPreferences(context,"feed-size");
+        if (t1==null || t1.equals("")){
+            feedSizeSlider.setValue(0.5F);
+            String s = "Current size: 0.5";
+            FeedSizeText.setText(s);
+        }else{
+            feedSizeSlider.setValue(Float.parseFloat(t1));
+            float t = Math.round(Float.parseFloat(t1)*100)/100;
+            String t1s = String.valueOf(t);
+            String s = "Current size: "+t1s.substring(0,3);
+            FeedSizeText.setText(s);
+
+        }
+
 
 
     }

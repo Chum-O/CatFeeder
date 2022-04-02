@@ -10,12 +10,16 @@
 
     <WebView
         android:id="@+id/pi_cam_stream"
-        android:layout_width="match_parent"
-        android:layout_height="320dp"
+        android:layout_width="400dp"
+        android:layout_height="225dp"
         android:layout_marginEnd="4dp"
-        android:layout_marginBottom="300dp"
+        android:layout_marginBottom="316dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.731" />
 
     <Button
         android:id="@+id/random_jitter_button"
@@ -26,7 +30,11 @@
         android:background="@color/design_default_color_primary_dark"
         android:text="Random"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.859" />
 
     <Button
         android:id="@+id/enable_disable_laser"
@@ -37,17 +45,25 @@
         android:background="@color/design_default_color_primary_dark"
         android:text="Toggle Laser"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.859" />
 
     <View
         android:id="@+id/pi_cam_controller"
-        android:layout_width="360dp"
-        android:layout_height="200dp"
+        android:layout_width="350dp"
+        android:layout_height="250dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="28dp"
         android:background="@color/design_default_color_primary_dark"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.81"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
