@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.widget.Button;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 public class MenuActivity extends AppCompatActivity {
     Button button_sign_out;
@@ -26,42 +25,17 @@ public class MenuActivity extends AppCompatActivity {
         button_manual_feeding = findViewById(R.id.button_activate_feeder);
         button_camera_laser = findViewById(R.id.button_laser_camera);
 
-        button_sign_out.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openMainActivity();
-            }
-        });
-        button_feeder_status.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openFeederStatusActivity();
-            }
-        });
-        button_feeder_log.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openFeederLogActivity();
-            }
-        });
-        button_schedule_feeding.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openScheduleFeedingActivity();
-            }
-        });
-        button_manual_feeding.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openFeedingActivity();
-            }
-        });
-        button_camera_laser.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                openLaserToyActivity();
-            }
-        });
+        button_sign_out.setOnClickListener(v -> openMainActivity());
+
+        button_feeder_status.setOnClickListener(v -> openFeederStatusActivity());
+
+        button_feeder_log.setOnClickListener(v -> openFeederLogActivity());
+
+        button_schedule_feeding.setOnClickListener(v -> openScheduleFeedingActivity());
+
+        button_manual_feeding.setOnClickListener(v -> openFeedingActivity());
+
+        button_camera_laser.setOnClickListener(v -> openLaserToyActivity());
     }
 
     public void openMainActivity() {

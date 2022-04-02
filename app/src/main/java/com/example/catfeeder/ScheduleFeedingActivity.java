@@ -1,7 +1,8 @@
 package com.example.catfeeder;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.annotation.NonNull;
+
+import android.content.Intent;
 import android.widget.Button;
 import android.widget.TimePicker;
 import android.content.SharedPreferences;
@@ -29,9 +30,9 @@ public class ScheduleFeedingActivity extends AppCompatActivity {
     String feedingTime2;
     String feedingTime3;
     Context context;
-    private String url = "http://192.168.86.145:5000"; // URL HERE
-    private String POST = "POST";
-    private String GET = "GET";
+    private final String url = "http://192.168.86.145:5000"; // URL HERE
+    private final String POST = "POST";
+//    private final String GET = "GET";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,8 @@ public class ScheduleFeedingActivity extends AppCompatActivity {
         time_feeding1.setText(getDataFromPreferences(context, "feedingTime1"));
         time_feeding1.setText(getDataFromPreferences(context, "feedingTime2"));
         time_feeding1.setText(getDataFromPreferences(context, "feedingTime3"));
+
+        back_button.setOnClickListener(v -> openMainActivity());
 
         button_feeding1.setOnClickListener(v -> {
             curHour = timePicker.getCurrentHour().toString();
@@ -89,6 +92,11 @@ public class ScheduleFeedingActivity extends AppCompatActivity {
             sendRequest(POST, "setFeeding", "feedingTime3","3."+feedingTime3);
         });
 
+    }
+
+    public void openMainActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     public static void saveDataToPreferences(Context context, String key, String value) {
