@@ -2,8 +2,11 @@ package com.example.catfeeder;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TimePicker;
@@ -29,6 +32,9 @@ public class ScheduleFeedingActivity extends AppCompatActivity {
     TextView time_feeding1;
     TextView time_feeding2;
     TextView time_feeding3;
+    TextView size_feeding1;
+    TextView size_feeding2;
+    TextView size_feeding3;
     TimePicker timePicker;
     String curHour;
     String curMin;
@@ -37,8 +43,13 @@ public class ScheduleFeedingActivity extends AppCompatActivity {
     String feedingTime3;
     Context context;
     Slider feedSizeSlider;
-    Button setFeedSize;
-    TextView feedSizeText;
+    Button deleteButton1;
+    Button deleteButton2;
+    Button deleteButton3;
+    Button setFeedSize1;
+    Button setFeedSize2;
+    Button setFeedSize3;
+
     private final String url = "http://192.168.86.145:5000"; // URL HERE
     private final String POST = "POST";
     private final String GET = "GET";
@@ -56,10 +67,18 @@ public class ScheduleFeedingActivity extends AppCompatActivity {
         time_feeding1 = (TextView) findViewById(R.id.time_feeding1);
         time_feeding2 = (TextView) findViewById(R.id.time_feeding2);
         time_feeding3 = (TextView) findViewById(R.id.time_feeding3);
+        size_feeding1 = (TextView) findViewById(R.id.size_feeding1);
+        size_feeding2 = (TextView) findViewById(R.id.size_feeding2);
+        size_feeding3 = (TextView) findViewById(R.id.size_feeding3);
         timePicker = (TimePicker) findViewById(R.id.timePicker);
         feedSizeSlider = findViewById(R.id.feed_size_slider);
-        setFeedSize = findViewById(R.id.set_feed_size);
-        feedSizeText = findViewById(R.id.feedSizeText);
+        deleteButton1 = findViewById(R.id.remove_feeding1);
+        deleteButton2 = findViewById(R.id.remove_feeding2);
+        deleteButton3 = findViewById(R.id.remove_feeding3);
+        setFeedSize1 = findViewById(R.id.button_feeding1_size);
+        setFeedSize2 = findViewById(R.id.button_feeding2_size);
+        setFeedSize3 = findViewById(R.id.button_feeding3_size);
+
 
 
         time_feeding1.setText(getDataFromPreferences(context, "feedingTime1"));
@@ -104,28 +123,61 @@ public class ScheduleFeedingActivity extends AppCompatActivity {
             sendRequest(POST, "setFeeding", "feedingTime3","3."+feedingTime3);
         });
 
-        setFeedSize.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                float t = feedSizeSlider.getValue();
-                String t1=String.valueOf(t);
-                saveDataToPreferences(context,"feed-size",t1);
-                String s = "Current size:" + t1.substring(0,3);
-                feedSizeText.setText(s);
-            }
+        setFeedSize1.setOnClickListener(v -> {
+            String feedingSize1 = String.valueOf(feedSizeSlider.getValue());
+            saveDataToPreferences(context, "feedingSize1", feedingSize1);
+            sendRequest(POST, "setFeedSize", "size","1:"+feedingSize1);
+            size_feeding1.setText(feedingSize1.substring(0,4));
         });
 
-        String t1=getDataFromPreferences(context,"feed-size");
-        if (t1==null || t1.equals("")){
-            feedSizeSlider.setValue(0.5F);
-            String s = "Current size: 0.5";
-            feedSizeText.setText(s);
-        }else{
-            feedSizeSlider.setValue(Float.parseFloat(t1));
-            String t1s = String.valueOf(t1);
-            String s = "Current size: "+t1s.substring(0,3);
-            feedSizeText.setText(s);
+        setFeedSize2.setOnClickListener(v -> {
+            String feedingSize2 = String.valueOf(feedSizeSlider.getValue());
+            saveDataToPreferences(context, "feedingSize2", feedingSize2);
+            sendRequest(POST, "setFeedSize", "size","2:"+feedingSize2);
+            size_feeding2.setText(feedingSize2.substring(0,4));
+        });
 
+        setFeedSize3.setOnClickListener(v -> {
+            String feedingSize3 = String.valueOf(feedSizeSlider.getValue());
+            saveDataToPreferences(context, "feedingSize3", feedingSize3);
+            sendRequest(POST, "setFeedSize", "size","3:"+feedingSize3);
+            size_feeding3.setText(feedingSize3.substring(0,4));
+        });
+
+        deleteButton1.setOnClickListener(v -> {
+            feedingTime1 = "";
+            saveDataToPreferences(context,"feedingTime1",null);
+            time_feeding1.setText("");
+            sendRequest(POST,"deleteFeeding", "feedID", "1");
+
+        });
+
+        deleteButton2.setOnClickListener(v -> {
+            feedingTime2 = "";
+            saveDataToPreferences(context,"feedingTime2",null);
+            time_feeding2.setText("");
+            sendRequest(POST,"deleteFeeding", "feedID", "2");
+
+        });
+
+        deleteButton3.setOnClickListener(v -> {
+            feedingTime3 = "";
+            saveDataToPreferences(context,"feedingTime3",null);
+            time_feeding3.setText("");
+            sendRequest(POST,"deleteFeeding", "feedID", "3");
+
+        });
+
+
+        if (getDataFromPreferences(context,"feedingSize1") != null){
+            size_feeding1.setText(getDataFromPreferences(context,"feedingSize1").substring(0,4));
+            feedSizeSlider.setValue(Float.parseFloat(getDataFromPreferences(context,"feedingSize1")));
+        }
+        if (getDataFromPreferences(context,"feedingSize2") != null){
+            size_feeding2.setText(getDataFromPreferences(context,"feedingSize2").substring(0,4));
+        }
+        if (getDataFromPreferences(context,"feedingSize3") != null){
+            size_feeding3.setText(getDataFromPreferences(context,"feedingSize3").substring(0,4));
         }
 
 

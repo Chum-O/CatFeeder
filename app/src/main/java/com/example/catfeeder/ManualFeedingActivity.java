@@ -10,6 +10,7 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -81,6 +82,50 @@ public class ManualFeedingActivity extends AppCompatActivity {
         return;
     }
 
+    private void setFeedSizeTemp(String size){
+        OkHttpClient okhttpclient = new OkHttpClient();
+        Request request;
+        String fullURL = "http://192.168.86.145:5000/setFeedSizeTemp" + (size==null ? "" : "/"+size);
+
+        RequestBody formBody = new FormBody.Builder()
+                .add("size", size)
+                .build();
+
+        request=new Request.Builder()
+                .url(fullURL)
+                .post(formBody)
+                .build();
+
+        okhttpclient.newCall(request).enqueue(new Callback() {
+            @Override
+            // called if server is unreachable
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.println(Log.DEBUG,"debug","error connecting to the server");
+                    }
+                });
+            }
+
+            @Override
+            // called if we get a
+            // response from the server
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.body().string().equals("success")) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), "temporary feed size set", Toast.LENGTH_SHORT).show();
+                            Log.println(Log.DEBUG,"debug","response received");
+                        }
+                    });
+                }
+            }
+        });
+        return;
+    }
+
     public static void saveDataToPreferences(Context context, String key, String value) {
         SharedPreferences sp = context.getSharedPreferences("feed-size", Context.MODE_PRIVATE);
         Editor editor = sp.edit();
@@ -131,6 +176,7 @@ public class ManualFeedingActivity extends AppCompatActivity {
                 String t1=String.valueOf(t);
                 saveDataToPreferences(context,"feed-size",t1);
                 String t1s = String.valueOf(t);
+                setFeedSizeTemp(t1s);
                 String s = "Current size: " + t1s.substring(0,3);
                 FeedSizeText.setText(s);
             }
@@ -153,6 +199,7 @@ public class ManualFeedingActivity extends AppCompatActivity {
 
 
     }
+
 
 }
 
