@@ -21,6 +21,9 @@ import com.google.android.material.slider.Slider;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import okhttp3.*;
 
@@ -80,10 +83,27 @@ public class ScheduleFeedingActivity extends AppCompatActivity {
         setFeedSize3 = findViewById(R.id.button_feeding3_size);
 
 
-
-        time_feeding1.setText(getDataFromPreferences(context, "feedingTime1"));
-        time_feeding2.setText(getDataFromPreferences(context, "feedingTime2"));
-        time_feeding3.setText(getDataFromPreferences(context, "feedingTime3"));
+        String t1 = "";
+        try {
+            t1 = convert24to12hr(getDataFromPreferences(context,"feedingTime1"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String t2 = "";
+        try {
+            t2 = convert24to12hr(getDataFromPreferences(context,"feedingTime2"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String t3 = "";
+        try {
+            t3 = convert24to12hr(getDataFromPreferences(context,"feedingTime3"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        time_feeding1.setText(t1);
+        time_feeding2.setText(t2);
+        time_feeding3.setText(t3);
 
         back_button.setOnClickListener(v -> openMenuActivity());
 
@@ -94,7 +114,13 @@ public class ScheduleFeedingActivity extends AppCompatActivity {
                 curMin = "0"+curMin;
             }
             feedingTime1 = curHour + ":" + curMin;
-            time_feeding1.setText(feedingTime1);
+            String cn = feedingTime1;
+            try {
+                cn = convert24to12hr(feedingTime1);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            time_feeding1.setText(cn);
             saveDataToPreferences(context, "feedingTime1", feedingTime1);
             sendRequest(POST, "setFeeding", "feedingTime1","1."+feedingTime1);
         });
@@ -106,7 +132,13 @@ public class ScheduleFeedingActivity extends AppCompatActivity {
                 curMin = "0"+curMin;
             }
             feedingTime2 = curHour + ":" + curMin;
-            time_feeding2.setText(feedingTime2);
+            String cn = feedingTime1;
+            try {
+                cn = convert24to12hr(feedingTime2);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            time_feeding2.setText(cn);
             saveDataToPreferences(context, "feedingTime2", feedingTime2);
             sendRequest(POST, "setFeeding", "feedingTime2","2."+feedingTime2);
         });
@@ -118,7 +150,13 @@ public class ScheduleFeedingActivity extends AppCompatActivity {
                 curMin = "0"+curMin;
             }
             feedingTime3 = curHour + ":" + curMin;
-            time_feeding3.setText(feedingTime3);
+            String cn = feedingTime1;
+            try {
+                cn = convert24to12hr(feedingTime3);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            time_feeding3.setText(cn);
             saveDataToPreferences(context, "feedingTime3", feedingTime3);
             sendRequest(POST, "setFeeding", "feedingTime3","3."+feedingTime3);
         });
@@ -169,23 +207,31 @@ public class ScheduleFeedingActivity extends AppCompatActivity {
         });
 
 
-        if (getDataFromPreferences(context,"feedingSize1") != null){
+        if (getDataFromPreferences(context,"feedingSize1") != null && getDataFromPreferences(context,"feedingSize1").length() > 3 ){
             size_feeding1.setText(getDataFromPreferences(context,"feedingSize1").substring(0,4));
             feedSizeSlider.setValue(Float.parseFloat(getDataFromPreferences(context,"feedingSize1")));
         }
-        if (getDataFromPreferences(context,"feedingSize2") != null){
+        if (getDataFromPreferences(context,"feedingSize2") != null  && getDataFromPreferences(context,"feedingSize1").length() > 3){
             size_feeding2.setText(getDataFromPreferences(context,"feedingSize2").substring(0,4));
         }
-        if (getDataFromPreferences(context,"feedingSize3") != null){
+        if (getDataFromPreferences(context,"feedingSize3") != null  && getDataFromPreferences(context,"feedingSize1").length() > 3){
             size_feeding3.setText(getDataFromPreferences(context,"feedingSize3").substring(0,4));
         }
-
 
     }
 
     public void openMenuActivity() {
         Intent intent = new Intent(this, MenuActivity.class);
         startActivity(intent);
+    }
+
+    public String convert24to12hr(String s) throws ParseException {
+        String _24HourTime = s;
+        SimpleDateFormat _24HourSDF = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat _12HourSDF = new SimpleDateFormat("hh:mm a");
+        Date _24HourDt = _24HourSDF.parse(_24HourTime);
+        System.out.println(_24HourDt);
+        return _12HourSDF.format(_24HourDt);
     }
 
     public static void saveDataToPreferences(Context context, String key, String value) {
