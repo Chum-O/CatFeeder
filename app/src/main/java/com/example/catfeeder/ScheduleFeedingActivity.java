@@ -82,7 +82,6 @@ public class ScheduleFeedingActivity extends AppCompatActivity {
         setFeedSize2 = findViewById(R.id.button_feeding2_size);
         setFeedSize3 = findViewById(R.id.button_feeding3_size);
 
-
         String t1 = "";
         try {
             t1 = convert24to12hr(getDataFromPreferences(context,"feedingTime1"));

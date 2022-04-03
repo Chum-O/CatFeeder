@@ -13,10 +13,9 @@
         android:layout_width="403dp"
         android:layout_height="300dp"
         android:layout_marginEnd="4dp"
-        android:layout_marginBottom="240dp"
+        android:layout_marginBottom="348dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" >
-    </WebView>
+        app:layout_constraintEnd_toEndOf="parent"></WebView>
 
     <com.google.android.material.slider.Slider
         android:id="@+id/feed_size_slider"
