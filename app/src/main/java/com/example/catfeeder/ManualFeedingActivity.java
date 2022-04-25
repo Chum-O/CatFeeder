@@ -42,6 +42,7 @@ public class ManualFeedingActivity extends AppCompatActivity {
     TextView FeedSizeText;
     Context context;
     Button SetFeedSize;
+    String PiUrl = "http://"+global.PiAddress+":8000";
 
     private void dispenseFood(){
         dispense.setEnabled(false);
@@ -50,7 +51,8 @@ public class ManualFeedingActivity extends AppCompatActivity {
         }, 3500);
 
         OkHttpClient okhttpclient = new OkHttpClient();
-        Request request = new Request.Builder().url("http://192.168.86.145:5000/feed").build();
+        String tempurl = PiUrl+"/feed";
+        Request request = new Request.Builder().url(tempurl).build();
 
         okhttpclient.newCall(request).enqueue(new Callback() {
             @Override
@@ -85,7 +87,7 @@ public class ManualFeedingActivity extends AppCompatActivity {
     private void setFeedSizeTemp(String size){
         OkHttpClient okhttpclient = new OkHttpClient();
         Request request;
-        String fullURL = "http://192.168.86.145:5000/setFeedSizeTemp" + (size==null ? "" : "/"+size);
+        String fullURL = PiUrl+"/setFeedSizeTemp" + (size==null ? "" : "/"+size);
 
         RequestBody formBody = new FormBody.Builder()
                 .add("size", size)
@@ -156,7 +158,7 @@ public class ManualFeedingActivity extends AppCompatActivity {
 
         String piCamPythonStream = "http://192.168.86.145:8000/stream.mjpg";
         String motionStream = "http://192.168.86.145:8081";
-        String mjpgStreamer = "http://192.168.86.145:8080/?action=stream";
+        String mjpgStreamer = "http://"+global.PiAddress+":8080/?action=stream";
         PiStream.getSettings().setLoadWithOverviewMode(true);
         PiStream.getSettings().setUseWideViewPort(true);
 
